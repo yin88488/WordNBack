@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>脑力单词训练 - WordNBack</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="game-panel">
+            <div id="wordDisplay">准备开始</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="difficultyProgress"></div>
+            </div>
+            <div class="controls">
+                <button id="yesBtn">✅ 匹配 (空格)</button>
+                <button id="noBtn">❌ 不匹配 (回车)</button>
+            </div>
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div>当前难度</div>
+                    <div id="currentN" class="stat-value">1</div>
+                </div>
+                <div class="stat-card">
+                    <div>正确率</div>
+                    <div id="accuracy" class="stat-value">100%</div>
+                </div>
+                <div class="stat-card">
+                    <div>连续正确</div>
+                    <div id="streak" class="stat-value">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-panel">
+            <h3>词库设置</h3>
+            <div class="word-input">
+                <input type="text" id="newWord" placeholder="输入新单词">
+                <input type="text" id="newMeaning" placeholder="输入释义">
+                <button onclick="addCustomWord()">添加单词</button>
+            </div>
+            <button onclick="resetProgress()">重置进度</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
