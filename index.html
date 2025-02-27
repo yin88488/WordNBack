@@ -1,49 +1,69 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>脑力单词训练 - WordNBack</title>
-    <link rel="stylesheet" href="style.css">
+    <title>N-Back Word Game</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="game-panel">
-            <div id="wordDisplay">准备开始</div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="difficultyProgress"></div>
-            </div>
-            <div class="controls">
-                <button id="yesBtn">✅ 匹配 (空格)</button>
-                <button id="noBtn">❌ 不匹配 (回车)</button>
-            </div>
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div>当前难度</div>
-                    <div id="currentN" class="stat-value">1</div>
-                </div>
-                <div class="stat-card">
-                    <div>正确率</div>
-                    <div id="accuracy" class="stat-value">100%</div>
-                </div>
-                <div class="stat-card">
-                    <div>连续正确</div>
-                    <div id="streak" class="stat-value">0</div>
-                </div>
-            </div>
-        </div>
+    <!-- Introduction Section -->
+    <div id="introSection">
+        <h1>N-Back Word Game</h1>
+        <p>Challenge your memory and learn new words!</p>
+        <p><strong>How to Play:</strong> Set the N-Back value in the settings. During the game, decide if the current word matches the word shown N steps ago. Click "Match" or "Not Match" accordingly. Your progress and score will be displayed during the game.</p>
+    </div>
 
-        <div class="settings-panel">
-            <h3>词库设置</h3>
-            <div class="word-input">
-                <input type="text" id="newWord" placeholder="输入新单词">
-                <input type="text" id="newMeaning" placeholder="输入释义">
-                <button onclick="addCustomWord()">添加单词</button>
-            </div>
-            <button onclick="resetProgress()">重置进度</button>
+    <!-- Game Section -->
+    <div id="gameSection">
+        <h2>Game Area</h2>
+        <p id="gameProgress">Progress: <span id="progress">0/10</span></p>
+        <p id="gameScore">Score: <span id="score">0</span>/<span id="totalAttempts">0</span></p>
+        <div id="wordDisplay">
+            <p id="currentWord"></p>
+            <p id="currentDefinition"></p>
+        </div>
+        <button id="matchButton" onclick="userAnswer(true)">Match</button>
+        <button id="notMatchButton" onclick="userAnswer(false)">Not Match</button>
+        <button id="replayAudioButton" onclick="replayAudio()">Replay Audio</button>
+    </div>
+
+    <!-- Settings Section -->
+    <div id="settingsSection">
+        <h2>Settings</h2>
+        <div>
+            <label for="nValue">Set N-Back:</label>
+            <input type="number" id="nValue" min="1" max="10" value="2">
+        </div>
+        <button onclick="startGame()">Start Game</button>
+        <button onclick="displayWordBank()">Show Word Bank</button>
+        <button onclick="exportWordBank()">Export Word Bank</button>
+        <button onclick="resetToDefault()">Reset to Default</button>
+        <h3>Add a New Word</h3>
+        <input type="text" id="newEnglishWord" placeholder="English Word">
+        <input type="text" id="newChineseWord" placeholder="Chinese Definition">
+        <button onclick="addWordToBank()">Add Word</button>
+        <h3>Import Word Bank</h3>
+        <input type="file" id="excelFile" accept=".xls, .xlsx" onchange="importWords(event)">
+    </div>
+
+    <!-- History Section -->
+    <div id="historySection">
+        <h2>History</h2>
+        <ul id="historyList"></ul>
+    </div>
+
+    <!-- Modal for Word Bank -->
+    <div id="wordBankModal">
+        <div id="wordBankContent">
+            <h2>Word Bank</h2>
+            <ul id="wordBankList"></ul>
+            <button onclick="closeWordBankModal()">Close</button>
         </div>
     </div>
 
-    <script src="game.js"></script>
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
