@@ -10,15 +10,34 @@ let score = 0;
 let totalAttempts = 0;
 let nValue = 2;
 
+// 修改：增加自定义单词数量逻辑
 function startGame() {
   progress = 0;
   score = 0;
   totalAttempts = 0;
+
   nValue = parseInt(document.getElementById('nValue').value);
-  gameWords = shuffle(wordBank).slice(0, 10);
+  const wordCount = parseInt(document.getElementById('wordCount').value); // 用户设置的单词数量
+
+  gameWords = generateGameWords(wordCount, wordBank); // 生成单词列表
   document.getElementById('score').innerText = 0;
   document.getElementById('totalAttempts').innerText = 0;
   showNextWord();
+}
+
+// 修改：新的单词生成机制，确保单词可以重复
+function generateGameWords(count, bank) {
+  const words = [];
+  for (let i = 0; i < count; i++) {
+      const randomWord = bank[Math.floor(Math.random() * bank.length)];
+      words.push(randomWord);
+
+      // 每隔一定数量插入重复单词以支持 "match"
+      if (i >= nValue && Math.random() > 0.1) {
+          words.push(words[i - nValue]);
+      }
+  }
+  return words.slice(0, count); // 限制到用户设置的单词数量
 }
 
 function showNextWord() {
@@ -31,7 +50,7 @@ function showNextWord() {
   const word = gameWords[progress];
   document.getElementById('currentWord').innerText = word.english;
   document.getElementById('currentDefinition').innerText = word.chinese;
-  document.getElementById('progress').innerText = `${progress + 1}/10`;
+  document.getElementById('progress').innerText = `${progress + 1}/${gameWords.length}`;
 
   playAudio(word.english);
 }
@@ -137,6 +156,7 @@ function resetToDefault() {
   localStorage.removeItem('gameHistory');
   alert('Word bank and history have been reset!');
   displayWordBank();
+  displayHistory();
 }
 
 function shuffle(arr) {
